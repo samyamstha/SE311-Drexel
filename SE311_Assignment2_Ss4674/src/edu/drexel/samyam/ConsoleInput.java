@@ -31,7 +31,6 @@ public class ConsoleInput extends Input {
 		getLines();
 		
 		for(String line : lines) {
-			System.out.println("_________");
 			output.put(line.replaceAll("\\p{Punct}", ""));
 		}
 		output.put(null);

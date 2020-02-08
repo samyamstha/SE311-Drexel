@@ -26,7 +26,6 @@ public class Alphabetize extends Filter{
 			Collections.sort(alphabetizedLines, String.CASE_INSENSITIVE_ORDER);
 			
 			for(String each : alphabetizedLines) {
-				System.out.println("********\n");
 				output.put(each);
 			}	
 			output.put(null);

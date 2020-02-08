@@ -24,7 +24,7 @@ public class CircularShift extends Filter{
 				Collections.addAll(wordsList, words);
 
 				// perform circular shifts
-				for (int i = 0; i < wordsList.size() - 1; i++) {
+				for (int i = 0; i < wordsList.size(); i++) {
 					wordsList.add(wordsList.get(0));
 					wordsList.remove(0);
 					String shiftedLine = String.join(" ", wordsList);

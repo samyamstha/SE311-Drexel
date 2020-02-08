@@ -47,10 +47,8 @@ public class FileInput extends Input {
 					
 					output.put(line.replaceAll("\\p{Punct}", ""));
 				
-
 				}
 				output.put(null);
-				System.out.println("_______\n");
 				valid = true;
 
 			} catch (IOException e) {

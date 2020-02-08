@@ -4,18 +4,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileOutput extends Output {
+public class FileOutput extends Filter {
 
 	private final String FILES_FOLDER_PATH = "src" + File.separator + "files";
+	private String outputFile;
 
-	public FileOutput(Pipe input, Pipe output) {
+	public FileOutput(Pipe input, Pipe output, String outputFile) {
 		super(input, output);
+		this.outputFile = outputFile;
+
 	}
 
 	@Override
 	protected void transform() {
 		try {
-			File file = new File(FILES_FOLDER_PATH + File.separator + "output.txt");
+			File file = new File(FILES_FOLDER_PATH + File.separator + outputFile);
 			
 
 			FileWriter writer = new FileWriter(file);
@@ -25,7 +28,7 @@ public class FileOutput extends Output {
 			while ((line = (String) input.get()) != null) {
 				writer.write(line + "\n");
 			}
-			System.out.println("\n****Output written to the file named output.txt in the files folder**** \n");
+			System.out.println("\n****Output written to the given file named " + outputFile + " in the files folder**** \n");
 			writer.close();
 		} catch (InterruptedException | IOException e) {
 			System.out.println("File not present to write.");

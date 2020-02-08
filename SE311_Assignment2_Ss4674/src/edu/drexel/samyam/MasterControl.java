@@ -1,6 +1,5 @@
 package edu.drexel.samyam;
 
-import java.util.Scanner;
 
 public class MasterControl {
 
@@ -10,97 +9,83 @@ public class MasterControl {
 	private static int AFTER_CIRCULAR_SHIFT = 2;
 	private static int AFTER_ALPHABETIZER = 3;
 
-	private static Input input;
-	private static Output output;
+	private static Filter input;
+	private static Filter output;
 	private static Filter circularShift;
 	private static Filter alphabetize;
 	private static Filter caseConverter;
+	private static Pipe input_pipe = new PipeImpl();
+	private static Pipe circularShift_pipe = new PipeImpl();
+	private static Pipe alphabetizer_pipe = new PipeImpl();
+	private static Pipe upperCase_pipe = new PipeImpl();
+	private static int location = 0;
+	private static String outputFile;
 
 	public static void main(String[] args) {
 
-		Pipe in_cs = new PipeImpl(); // pipe between input and circular shift
-		Pipe cs_al = new PipeImpl(); // pipe between circular shift and alphabetizer
-		Pipe al_ou = new PipeImpl(); // pipe between alphabetizer and output
-		Pipe uc = new PipeImpl(); // pipe for upper case converter
+		String prompt = "Please provide the correct location argument for uppercase converter as follows:\n"
+				+ "Provide " + AFTER_INPUT + " for After Input\n" + "Provide " + AFTER_CIRCULAR_SHIFT
+				+ " for After Circular Shift\n" + "Provide " + AFTER_ALPHABETIZER + " for After Alphabetizer\n"
+				+ "\nPlease provide the name of the output file followed by the location argument."
+				+ "\nExample: <Location> <outputFile>";
+		try {
+			if (args.length != 2) {
+				throw new Exception();
+			}
+			location = Integer.parseInt(args[0]);
+			outputFile = args[1];
+		} catch (Exception e) {
+			System.out.println("Required args not provided!\nSystem terminated!\n");
+			System.out.println(prompt);
+			System.exit(0);
+		}
+
+		if (location < 1 && location > 3) {
+			System.out.println(prompt);
+		}
 
 		if (getIOChoice() == CONSOLE_IO) {
-			
-			int location = getUpperCasePipeLocation();
-			if(location == 1) {
-				input = new ConsoleInput(null, in_cs);
-				caseConverter = new UpperCaseConverter(in_cs, uc);
-				circularShift = new CircularShift(uc, cs_al);
-				alphabetize = new Alphabetize(cs_al, al_ou);
-				output = new FileOutput(al_ou, null);
-				
-			} else if(location == 2) {
-				input = new ConsoleInput(null, in_cs);
-				circularShift = new CircularShift(in_cs, uc);
-				caseConverter = new UpperCaseConverter(uc, cs_al);
-				alphabetize = new Alphabetize(cs_al, al_ou);
-				output = new FileOutput(al_ou, null);
-			} else {
-				input = new ConsoleInput(null, in_cs);
-				circularShift = new CircularShift(in_cs, cs_al);
-				alphabetize = new Alphabetize(cs_al, uc);
-				caseConverter = new UpperCaseConverter(uc, al_ou);
-				output = new FileOutput(al_ou, null);
-			}
-			
-			input.start();
-			caseConverter.start();
-			circularShift.start();
-			alphabetize.start();
-			output.start();
-			
+			input = new ConsoleInput(null, input_pipe);
+			runIt(input);
+
 		} else {
-			int location = getUpperCasePipeLocation();
-			if(location == 1) {
-				input = new FileInput(null, in_cs);
-				caseConverter = new UpperCaseConverter(in_cs, uc);
-				circularShift = new CircularShift(uc, cs_al);
-				alphabetize = new Alphabetize(cs_al, al_ou);
-				output = new FileOutput(al_ou, null);
-				
-			} else if(location == 2) {
-				input = new FileInput(null, in_cs);
-				circularShift = new CircularShift(in_cs, uc);
-				caseConverter = new UpperCaseConverter(uc, cs_al);
-				alphabetize = new Alphabetize(cs_al, al_ou);
-				output = new FileOutput(al_ou, null);
-			} else {
-				input = new FileInput(null, in_cs);
-				circularShift = new CircularShift(in_cs, cs_al);
-				alphabetize = new Alphabetize(cs_al, uc);
-				caseConverter = new UpperCaseConverter(uc, al_ou);
-				output = new FileOutput(al_ou, null);
-			}
-			
-			input.start();
-			caseConverter.start();
-			circularShift.start();
-			alphabetize.start();
-			output.start();
-
-
+			input = new FileInput(null, input_pipe);
+			runIt(input);
 		}
 
 	}
 
-	private static int getUpperCasePipeLocation() {
-		String prompt = "Please enter the location for uppercase converter:\n" + AFTER_INPUT + ". After Input\n"
-				+ AFTER_CIRCULAR_SHIFT + ". After Circular Shift\n" + AFTER_ALPHABETIZER + ". After Alphabetizer";
-		int user_IO_preference;
+	private static void runIt(Filter input) {
+		if (location == 1) {
+			caseConverter = new UpperCaseConverter(input_pipe, upperCase_pipe);
+			output = new FileOutput(upperCase_pipe, null, outputFile);
 
-		input = new ConsoleInput(null, null);
-		System.out.println(prompt);
+			input.start();
+			caseConverter.start();
+			output.start();
 
-		do {
-			System.out.println("\nPlease make sure to enter a valid input");
-			user_IO_preference = ((ConsoleInput) input).getIntInput();
-		} while (!(user_IO_preference > 0 && user_IO_preference < 4));
+		} else if (location == 2) {
+			circularShift = new CircularShift(input_pipe, circularShift_pipe);
+			caseConverter = new UpperCaseConverter(circularShift_pipe, upperCase_pipe);
+			output = new FileOutput(upperCase_pipe, null, outputFile);
 
-		return user_IO_preference;
+			input.start();
+			caseConverter.start();
+			circularShift.start();
+			output.start();
+
+		} else {
+			circularShift = new CircularShift(input_pipe, circularShift_pipe);
+			alphabetize = new Alphabetize(circularShift_pipe, alphabetizer_pipe);
+			caseConverter = new UpperCaseConverter(alphabetizer_pipe, upperCase_pipe);
+			output = new FileOutput(upperCase_pipe, null, outputFile);
+
+			input.start();
+			caseConverter.start();
+			circularShift.start();
+			alphabetize.start();
+			output.start();
+		}
 	}
 
 	private static int getIOChoice() {
