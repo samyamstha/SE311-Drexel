@@ -49,8 +49,7 @@ public class ConsoleInput extends Input {
 
 		validate = new ValidateString();
 		boolean valid = false;
-//		System.out.println("Please enter the line number: " + Integer.toString(i));
-		System.out.println("Please enter the line: ");
+		System.out.println("Please enter the input/line: ");
 		String input = scan.nextLine().trim();
 		while (!valid) {
 			if (validate.validateInput(input)) {

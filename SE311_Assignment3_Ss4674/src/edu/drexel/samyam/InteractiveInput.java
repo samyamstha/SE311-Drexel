@@ -1,7 +1,5 @@
 package edu.drexel.samyam;
 
-import java.util.Scanner;
-
 public class InteractiveInput extends MyObservable {
 
 	private LineStorage lineStorage;
@@ -42,37 +40,47 @@ public class InteractiveInput extends MyObservable {
 
 	private void performSelectedAction(char userChoice) {
 		if (userChoice == 'a') {
-			String line = input.getLineInput();
-
-			processEvent(new MyEvent(line, MyEvent.LINE_ADDED));
-
+			add();
 		} else if (userChoice == 'd') {
-			System.out.println("Please enter the number for the line do you want to remove:");
-
-			if (lineStorage.getLines().size() < 1) {
-				System.out.println("\n\n***********No lines present to delete!***********\n\n");
-				
-			} else {
-				for (int i = 0; i < lineStorage.getLines().size(); i++) {
-					System.out.println(i + ".    " + lineStorage.getLines().get(i));
-				}
-				int lineIndex;
-				do {
-					System.out.println("\nPlease make sure to enter a valid input");
-					lineIndex = input.getIntInput();
-				} while (!(lineIndex >= 0 && lineIndex < lineStorage.getLines().size()));
-
-				processEvent(new MyEvent(lineIndex, MyEvent.LINE_REMOVED));
-			}
+			remove();
 
 		} else if (userChoice == 'p') {
-			processEvent(new MyEvent(null, MyEvent.ALBHABETIZE));
-			processEvent(new MyEvent(null, MyEvent.PRINT_READY));
+			print();
 
 		} else {
 			System.out.println("Quiting the program.");
 			System.exit(0);
 		}
+	}
+
+	private void add() {
+		String line = input.getLineInput();
+		processEvent(new MyEvent(line, MyEvent.LINE_ADDED));
+	}
+
+	private void remove() {
+		System.out.println("Please enter the number for the line do you want to remove:");
+
+		if (lineStorage.getLines().size() < 1) {
+			System.out.println("\n\n***********No lines present to delete!***********\n\n");
+
+		} else {
+			for (int i = 0; i < lineStorage.getLines().size(); i++) {
+				System.out.println(i + ".    " + lineStorage.getLines().get(i));
+			}
+			int lineIndex;
+			do {
+				System.out.println("\nPlease make sure to enter a valid input");
+				lineIndex = input.getIntInput();
+			} while (!(lineIndex >= 0 && lineIndex < lineStorage.getLines().size()));
+
+			processEvent(new MyEvent(lineIndex, MyEvent.LINE_REMOVED));
+		}
+	}
+
+	private void print() {
+		processEvent(new MyEvent(null, MyEvent.ALPHABETIZE));
+		processEvent(new MyEvent(null, MyEvent.PRINT_READY));
 	}
 
 	private void printInfo() {

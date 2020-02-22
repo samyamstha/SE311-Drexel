@@ -9,10 +9,12 @@ public class ConsoleOutput extends MyObserver {
 	}
 
 	public void printLines() {
-		System.out.println("\n***Printing alphabetized lines*** \n");
 		
 		if(lineStorage.getAlphabetized().isEmpty()) {
 			System.out.println("\n\n***********No lines present to print!***********\n\n");
+		}else {
+			System.out.println("\n\n***********Printing alphabetized lines***********\n\n");
+
 		}
 		
 		for (String each : lineStorage.getAlphabetized()) {
@@ -22,7 +24,7 @@ public class ConsoleOutput extends MyObserver {
 
 	@Override
 	public void update(MyEvent event) {
-		if (isMyEvent(event.getEventType(), MyEvent.ALBHABETIZE)) {
+		if (isMyEvent(event.getEventType(), MyEvent.PRINT_READY)) {
 			printLines();
 		}
 	}

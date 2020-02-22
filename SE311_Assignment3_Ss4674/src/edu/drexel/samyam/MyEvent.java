@@ -10,7 +10,7 @@ public class MyEvent {
 	public final static int LINE_ADDED = 100;
 	public final static int PRINT_READY = 200;
 	public final static int LINE_REMOVED = 300;
-	public final static int ALBHABETIZE = 400;
+	public final static int ALPHABETIZE = 400;
 
 	public MyEvent(int index, int eventType) {
 		this.lineIndex = index;

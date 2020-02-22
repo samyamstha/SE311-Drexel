@@ -32,7 +32,7 @@ public class Alphabetize extends MyObserver{
 
 	@Override
 	public void update(MyEvent event) {
-		if (isMyEvent(event.getEventType(), MyEvent.ALBHABETIZE)) {
+		if (isMyEvent(event.getEventType(), MyEvent.ALPHABETIZE)) {
 			alphabetizeLines();
 		}
 	}
