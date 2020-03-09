@@ -73,5 +73,9 @@ public class CalculatorView extends JFrame {
 		return buttonsPanel;
 	}
 	
+	public JLabel getoutputLabel() {
+		return outputLabel;
+	}
+	
 	
 }
