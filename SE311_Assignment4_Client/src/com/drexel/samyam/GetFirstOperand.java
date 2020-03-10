@@ -15,19 +15,21 @@ public class GetFirstOperand extends State {
 
 		if (operators.contains(input)) {
 			calculatorContext.setOperator(input);
-			calculatorContext.setState(new GetSecondOperand(calculatorContext));
+			calculatorContext.setState(new WaitingNextOperand(calculatorContext));
+			calculatorContext.setDisplayString(calculatorContext.getOperator());
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-					calculatorContext.getFirstOperand().toString() + calculatorContext.getOperator()));
+					calculatorContext.getDisplayString().toString()));
 
 		} else if (digits.contains(input)) {
 			calculatorContext.addFirstOperand(calculatorContext.getValue());
+			calculatorContext.setDisplayString(calculatorContext.getValue());
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-					calculatorContext.getFirstOperand().toString()));
+					calculatorContext.getDisplayString().toString()));
 
-		} else if (input.equals("=")) {
+		} else if (input.equals(EQUALS)) {
 			// TODO get to error state
 
-		} else if (input.equalsIgnoreCase("C")) {
+		} else if (input.equalsIgnoreCase(RESET)) {
 			reset();
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, EMPTY_STRING));
 		}

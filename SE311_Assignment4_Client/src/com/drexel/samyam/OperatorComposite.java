@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class OperatorComposite extends OperatorComponent{
 	
-	ArrayList<OperatorComponent> children = new ArrayList<OperatorComponent>();
+	ArrayList<OperatorComponent> children;
 	
 	
 	public OperatorComposite(String value) {
@@ -16,8 +16,11 @@ public class OperatorComposite extends OperatorComponent{
 		return children;
 	}
 	
-	public void addChild(OperatorComponent operator) {
-
+	public void addChild(OperatorComponent component) {
+		if (children == null) {
+			children = new ArrayList<OperatorComponent>();
+		}
+		children.add(component);
 	}
 
 	@Override

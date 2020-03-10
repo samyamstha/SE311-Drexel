@@ -12,16 +12,31 @@ public class GetSecondOperand extends State {
 	public void performAction() {
 		System.out.println("GetSecondOperand");
 		String input = calculatorContext.getValue();
-		
-		if(operators.contains(input)) {
-			// TODO get to the error state
-		} else if(digits.contains(input)) {
-			calculatorContext.addSecondOperand(calculatorContext.getValue());
+
+		if (operators.contains(input)) {
+			calculatorContext.setState(new WaitingNextOperand(calculatorContext));
+			String temp = calculatorContext.getDisplayString().toString();
+			calculatorContext.resetDisplayString();
+			calculatorContext.setDisplayString(
+					"(" + temp + ")" + calculatorContext.getValue());
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-					calculatorContext.getFirstOperand().toString() + calculatorContext.getOperator() + calculatorContext.getSecondOperand().toString()));
-		} else if (input.equalsIgnoreCase("C")) {
+					calculatorContext.getDisplayString().toString()));
+			performCalculation(false);
+			calculatorContext.setOperator(input);
+
+		} else if (digits.contains(input)) {
+			calculatorContext.addSecondOperand(calculatorContext.getValue());
+			calculatorContext.setDisplayString(calculatorContext.getValue());
+			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+					calculatorContext.getDisplayString().toString()));
+		} else if (input.equalsIgnoreCase(RESET)) {
 			reset();
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, EMPTY_STRING));
+		} else if (input.equals(EQUALS)) {
+			// change the state to calculate then call the calculate logic right here
+			Calculate calculate = new Calculate(calculatorContext);
+			calculatorContext.setState(calculate);
+			performCalculation(true);
 		}
 	}
 }

@@ -14,7 +14,8 @@ public class Start extends State {
 		if (digits.contains(calculatorContext.getValue())) {
 			calculatorContext.setState(new GetFirstOperand(calculatorContext));
 			calculatorContext.addFirstOperand(calculatorContext.getValue());
-			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, calculatorContext.getFirstOperand().toString()));
+			calculatorContext.setDisplayString(calculatorContext.getValue());
+			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, calculatorContext.getDisplayString().toString()));
 
 		} else {
 			/* User clicks non-digit button so the system remains unchanged */
