@@ -1,6 +1,9 @@
 package com.drexel.samyam;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public abstract class State {
 
@@ -20,7 +23,7 @@ public abstract class State {
 	public void reset() {
 		calculatorContext.resetAll();
 	}
-	
+
 	public void resetOperands() {
 		calculatorContext.resetOperands();
 	}
@@ -32,13 +35,29 @@ public abstract class State {
 		root.addChild(new Operand(calculatorContext.getSecondOperand().toString()));
 		root.acceptVisitor(visitor);
 
-		// display the result on the calculator
+		String result = String.valueOf(visitor.getResult());
+		// display the result on the calculator also add the successful operation to the
+		// list
 		if (displayResult) {
-			calculatorContext.processEvent(
-					new ActionEvent(this, ActionEvent.ACTION_PERFORMED, String.valueOf(visitor.getResult())));
+//			calculatorContext.addSuccessfulExpression(calculatorContext.getDisplayString() + EQUALS + result);
+			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, result));
+			feedServer(calculatorContext.getDisplayString() + EQUALS + result);
 		} else {
 			resetOperands();
-			calculatorContext.addFirstOperand(String.valueOf(visitor.getResult()));
+			calculatorContext.addFirstOperand(result);
+		}
+	}
+
+	private void feedServer(String expression) {
+		try {
+			Socket socket = new Socket("localhost", 3000);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			objectOutputStream.writeObject(expression);
+//			socket.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

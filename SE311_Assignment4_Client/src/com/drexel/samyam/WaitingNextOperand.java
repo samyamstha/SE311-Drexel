@@ -15,7 +15,11 @@ public class WaitingNextOperand extends State {
 		String input = calculatorContext.getValue();
 
 		if (operators.contains(input) || input.equals(EQUALS)) {
-			// TODO get to the error state
+			Error errorState = new Error(calculatorContext);
+			calculatorContext.setPrevState(this);
+			calculatorContext.setState(errorState);
+			errorState.performAction();
+			
 		} else if (digits.contains(input)) {
 			calculatorContext.addSecondOperand(calculatorContext.getValue());
 			calculatorContext.setDisplayString(calculatorContext.getValue());

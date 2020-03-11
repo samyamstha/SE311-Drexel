@@ -27,7 +27,10 @@ public class GetFirstOperand extends State {
 					calculatorContext.getDisplayString().toString()));
 
 		} else if (input.equals(EQUALS)) {
-			// TODO get to error state
+			Error errorState = new Error(calculatorContext);
+			calculatorContext.setPrevState(this);
+			calculatorContext.setState(errorState);
+			errorState.performAction();
 
 		} else if (input.equalsIgnoreCase(RESET)) {
 			reset();

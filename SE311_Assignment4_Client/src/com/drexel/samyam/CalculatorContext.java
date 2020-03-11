@@ -12,8 +12,9 @@ public class CalculatorContext {
 	private StringBuilder firstOperand;
 	private StringBuilder secondOperand;
 	private String operator;
-	private ArrayList<String> expressions = new ArrayList<String>();
+	private ArrayList<String> expressions;
 	private StringBuilder displayString;
+	private State prevState;
 
 	public String getValue() {
 		return value;
@@ -29,6 +30,14 @@ public class CalculatorContext {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public State getPrevState() {
+		return prevState;
+	}
+
+	public void setPrevState(State prevState) {
+		this.prevState = prevState;
 	}
 
 	public String getOperator() {
@@ -70,6 +79,13 @@ public class CalculatorContext {
 			this.secondOperand = new StringBuilder();
 		}
 		this.secondOperand.append(secondOperand);
+	}
+	
+	public void addSuccessfulExpression(String expression) {
+		if (this.expressions == null) {
+			this.expressions = new ArrayList<String>();
+		}
+		this.expressions.add(expression);
 	}
 	
 	public void resetAll() {
