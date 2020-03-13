@@ -39,7 +39,6 @@ public abstract class State {
 		// display the result on the calculator also add the successful operation to the
 		// list
 		if (displayResult) {
-//			calculatorContext.addSuccessfulExpression(calculatorContext.getDisplayString() + EQUALS + result);
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, result));
 			feedServer(calculatorContext.getDisplayString() + EQUALS + result);
 		} else {
@@ -56,7 +55,6 @@ public abstract class State {
 //			socket.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

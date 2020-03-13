@@ -6,6 +6,10 @@ public class OperationVisitor extends Visitor {
 
 	private ArrayList<Double> operands = new ArrayList<Double>();
 	private double result;
+	private String PLUS = "+";
+	private String SUBTRACT = "-";
+	private String MULTIPLY = "*";
+	private String DIVIDE = "/";
 
 	@Override
 	public void visitOperator(OperatorComposite operator) {
@@ -15,13 +19,13 @@ public class OperationVisitor extends Visitor {
 			child.acceptVisitor(this);
 		}
 
-		if (operation.equals("+")) {
+		if (operation.equals(PLUS)) {
 			result = operands.get(0) + operands.get(1);
-		} else if (operation.equals("-")) {
+		} else if (operation.equals(SUBTRACT)) {
 			result = operands.get(0) - operands.get(1);
-		} else if (operation.equals("*")) {
+		} else if (operation.equals(MULTIPLY)) {
 			result = operands.get(0) * operands.get(1);
-		} else if (operation.equals("/")) {
+		} else if (operation.equals(DIVIDE)) {
 			result = operands.get(0) / operands.get(1);
 		}
 

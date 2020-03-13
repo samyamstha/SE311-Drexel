@@ -3,7 +3,9 @@ package com.drexel.samyam;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.JButton;
 
@@ -11,7 +13,6 @@ public class CalculatorController {
 
 	private CalculatorView calculatorView;
 	private CalculatorContext calculatorContext;
-	private OperatorComponent operator;
 
 	public CalculatorController() {
 
@@ -38,18 +39,23 @@ public class CalculatorController {
 	public void setCalculatorContext(CalculatorContext calculatorContext) {
 		this.calculatorContext = calculatorContext;
 		calculatorContext.addActionListener(new LabelListener());
-	}
-
-	public OperatorComponent getOperator() {
-		return operator;
-	}
-
-	public void setOperator(OperatorComponent operator) {
-		this.operator = operator;
+//		calculatorContext.addActionListener(new FeedListener());
 	}
 
 	public State getState() {
 		return calculatorContext.getState();
+	}
+
+	public void feedServer(String expression) {
+		try {
+			Socket socket = new Socket("localhost", 3000);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			objectOutputStream.writeObject(expression);
+//			socket.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/* Action Listener to the Calculator Buttons */
@@ -59,14 +65,13 @@ public class CalculatorController {
 		public void actionPerformed(ActionEvent e) {
 
 			String inputValue = e.getActionCommand();
-			System.out.println(e.getActionCommand());
 			calculatorContext.setValue(inputValue);
 			getState().performAction();
 
 		}
 
 	}
-	
+
 	/* Action Listener to the Calculator Display Label */
 	private class LabelListener implements ActionListener {
 
@@ -74,6 +79,18 @@ public class CalculatorController {
 		public void actionPerformed(ActionEvent e) {
 
 			calculatorView.getoutputLabel().setText(e.getActionCommand());
+
+		}
+
+	}
+
+	/* Action Listener to the Feed Server the expressions */
+	private class FeedListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			feedServer(e.getActionCommand());
 
 		}
 

@@ -10,8 +10,6 @@ public class WaitingNextOperand extends State {
 
 	@Override
 	public void performAction() {
-		System.out.println("WaitingNextOperand");
-
 		String input = calculatorContext.getValue();
 
 		if (operators.contains(input) || input.equals(EQUALS)) {
@@ -19,7 +17,7 @@ public class WaitingNextOperand extends State {
 			calculatorContext.setPrevState(this);
 			calculatorContext.setState(errorState);
 			errorState.performAction();
-			
+
 		} else if (digits.contains(input)) {
 			calculatorContext.addSecondOperand(calculatorContext.getValue());
 			calculatorContext.setDisplayString(calculatorContext.getValue());

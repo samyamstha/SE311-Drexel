@@ -10,7 +10,6 @@ public class GetSecondOperand extends State {
 
 	@Override
 	public void performAction() {
-		System.out.println("GetSecondOperand");
 		String input = calculatorContext.getValue();
 
 		if (operators.contains(input)) {

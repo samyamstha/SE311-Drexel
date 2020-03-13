@@ -34,13 +34,10 @@ public class RequestHandler extends Thread {
 			for (String expression : expressions) {
 				System.out.println(expression);
 			}
-//
-//			OutputStream outputStream = client.getOutputStream();
-//			ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-//			objectOutputStream.writeObject(expressions);
+
 
 		} catch (IOException | ClassNotFoundException e) {
-//			e.printStackTrace();
+			System.out.println("Error occured in Server!");
 		}
 	}
 

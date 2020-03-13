@@ -10,7 +10,6 @@ public class Calculate extends State {
 
 	@Override
 	public void performAction() {
-		System.out.println("Calculate State");
 		String input = calculatorContext.getValue();
 
 		if (operators.contains(input) || input.equals(EQUALS) || input.equals(RESET)) {
@@ -21,8 +20,6 @@ public class Calculate extends State {
 			State state = new GetFirstOperand(calculatorContext);
 			calculatorContext.setState(state);
 			state.performAction();
-//			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, EMPTY_STRING));
-			
 		}
 	}
 

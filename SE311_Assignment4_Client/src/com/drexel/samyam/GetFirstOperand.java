@@ -11,8 +11,6 @@ public class GetFirstOperand extends State {
 	@Override
 	public void performAction() {
 		String input = calculatorContext.getValue();
-		System.out.println("Get First Operand State");
-
 		if (operators.contains(input)) {
 			calculatorContext.setOperator(input);
 			calculatorContext.setState(new WaitingNextOperand(calculatorContext));
