@@ -45,18 +45,6 @@ public class CalculatorController {
 		return calculatorContext.getState();
 	}
 
-	public void feedServer(String expression) {
-		try {
-			Socket socket = new Socket("localhost", 3000);
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-			objectOutputStream.writeObject(expression);
-//			socket.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/* Action Listener to the Calculator Buttons */
 	private class ButtonListener implements ActionListener {
 
