@@ -39,7 +39,6 @@ public class CalculatorController {
 	public void setCalculatorContext(CalculatorContext calculatorContext) {
 		this.calculatorContext = calculatorContext;
 		calculatorContext.addActionListener(new LabelListener());
-//		calculatorContext.addActionListener(new FeedListener());
 	}
 
 	public State getState() {
@@ -79,18 +78,6 @@ public class CalculatorController {
 		public void actionPerformed(ActionEvent e) {
 
 			calculatorView.getoutputLabel().setText(e.getActionCommand());
-
-		}
-
-	}
-
-	/* Action Listener to the Feed Server the expressions */
-	private class FeedListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			feedServer(e.getActionCommand());
 
 		}
 

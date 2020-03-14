@@ -36,9 +36,9 @@ public abstract class State {
 		root.acceptVisitor(visitor);
 
 		String result = String.valueOf(visitor.getResult());
-		// display the result on the calculator also add the successful operation to the
-		// list
-		if (displayResult) {
+		// display the result on the calculator
+
+		if (displayResult) { // send the successful expression to the server
 			calculatorContext.processEvent(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, result));
 			feedServer(calculatorContext.getDisplayString() + EQUALS + result);
 		} else {
